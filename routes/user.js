@@ -36,4 +36,24 @@ router.post("/adduser", (req, res) => {
       res.status(500).json({ err: "Something went wrong" });
     });
 });
+
+// login user
+router.post("/login", (req, res) => {
+  const { mail, password } = req.body;
+  user
+    .findAll({
+      where: { mail: mail, password: password }
+    })
+    .then(result => {
+      console.log(result.dataValues);
+      if (result.length > 0) {
+        return res.status(200).json(result);
+      }
+      res.status(404).json({ notfound: "user not found" });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err: "Something went wrong" });
+    });
+});
 module.exports = router;
